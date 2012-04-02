@@ -114,8 +114,8 @@ def friends_(value):
 def friendship_requests(value):
     user = _get_user_from_value('friends', value)
     return {
-        'sent': FriendshipRequest.objects.filter(from_user=user),
-        'received': FriendshipRequest.objects.filter(to_user=user),
+        'sent': FriendshipRequest.objects.filter(from_user=user, accepted=False),
+        'received': FriendshipRequest.objects.filter(to_user=user, accepted=False),
     }
 
 
