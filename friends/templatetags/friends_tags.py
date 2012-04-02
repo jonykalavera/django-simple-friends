@@ -20,8 +20,12 @@ class AddToFriendsNode(template.Node):
             ctx = {'target_user': target_user,
                    'current_user': current_user}
             if not target_user is current_user:
-                ctx['are_friends'] = Friendship.objects.are_friends(
-                                                    target_user, current_user)
+                try:
+                    are_friends=Friendship.objects.are_friends(
+                        target_user, current_user)
+                except Friendship.DoesNotExist:
+                    are_friends=False
+                ctx['are_friends'] = are_friends
                 ctx['is_invited'] = bool(FriendshipRequest.objects.filter(
                                                     from_user=current_user,
                                                     to_user=target_user,
