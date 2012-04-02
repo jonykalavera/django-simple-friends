@@ -23,13 +23,15 @@ class AddToFriendsNode(template.Node):
                 try:
                     are_friends=Friendship.objects.are_friends(
                         target_user, current_user)
+                    is_invited=bool(FriendshipRequest.objects.filter(
+                        from_user=current_user,
+                        to_user=target_user,
+                        accepted=False).count())
                 except Friendship.DoesNotExist:
                     are_friends=False
+                    is_invited=False
                 ctx['are_friends'] = are_friends
-                ctx['is_invited'] = bool(FriendshipRequest.objects.filter(
-                                                    from_user=current_user,
-                                                    to_user=target_user,
-                                                    accepted=False).count())
+                ctx['is_invited'] = is_invited
             return template.loader.render_to_string(self.template_name,
                                                     ctx,
                                                     context)
