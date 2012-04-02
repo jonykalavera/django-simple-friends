@@ -74,10 +74,8 @@ class FriendshipManager(models.Manager):
         user1_friendship.friends.add(user2_friendship)
         # Now that user1 accepted user2's friend request we should delete any
         # request by user1 to user2 so that we don't have ambiguous data
-        FriendshipRequest.objects.filter(from_user=user1,
-                                         to_user=user2).delete()
-        FriendshipRequest.objects.filter(to_user=user1,
-                                         from_user=user2).delete()
+        FriendshipRequest.objects.filter(models.Q(from_user=user1,
+            to_user=user2)|models.Q(to_user=user1, from_user=user2)).delete()
 
     def unfriend(self, user1, user2):
         # Break friendship link between users
