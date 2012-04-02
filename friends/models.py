@@ -71,7 +71,7 @@ class FriendshipManager(models.Manager):
     def befriend(self, user1, user2):
         user1_friendship, fu1_created = Friendship.objects.get_or_create(user=user1)
         user2_friendship, fu2_created = Friendship.objects.get_or_create(user=user2)
-        user1_friendship.friends.add(user2_friendship))
+        user1_friendship.friends.add(user2_friendship)
         # Now that user1 accepted user2's friend request we should delete any
         # request by user1 to user2 so that we don't have ambiguous data
         FriendshipRequest.objects.filter(from_user=user1,
