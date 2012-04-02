@@ -8,7 +8,7 @@ Allready your friend.
 Friend-Request sent.
 </span>
 {% else %}
-<a href="{% url 'friendship_request' %}" class="friendship">
+<a href="{% url 'friendship_request' target_user.username %}" class="friendship">
 Friend-Request sent.
 </a>
 {% endif %}{% endif %}
