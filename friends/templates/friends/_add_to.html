@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if are_friends %}
+<span class="friendship">
+Allready your friend.
+</span>
+{% else %}{% if is_invited %}
+<span class="friendship">
+Friend-Request sent.
+</span>
+{% else %}
+<a href="{% url 'friendship_request' %}" class="friendship">
+Friend-Request sent.
+</a>
+{% endif %}{% endif %}
