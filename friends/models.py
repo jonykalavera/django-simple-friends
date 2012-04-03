@@ -82,10 +82,8 @@ class FriendshipManager(models.Manager):
         Friendship.objects.get(user=user1).friends.remove(
                                            Friendship.objects.get(user=user2))
         # Delete FriendshipRequest's as well
-        FriendshipRequest.objects.filter(from_user=user1,
-                                         to_user=user2).delete()
-        FriendshipRequest.objects.filter(from_user=user2,
-                                         to_user=user1).delete()
+        FriendshipRequest.objects.filter(models.Q(from_user=user1,
+            to_user=user2)|models.Q(to_user=user1, from_user=user2)).delete()
 
 
 class Friendship(models.Model):

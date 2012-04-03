@@ -1,11 +1,11 @@
 {% load i18n %}
 {% if are_friends %}
 <span class="friendship">
-Allready your friend.
+{{target_user}} is your friend.
 </span>
 {% else %}{% if is_invited %}
 <span class="friendship">
-Friend-Request sent.
+Friend-Request sent to {{target_user}}.
 </span>
 {% else %}
 <a href="{% url friendship_request target_user.username %}" class="friendship">
