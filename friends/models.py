@@ -19,6 +19,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 import signals
 
+try:
+    from notification import models as notification
+except:
+    notification = None
+
 
 class FriendshipRequest(models.Model):
     from_user = models.ForeignKey(User, related_name="invitations_from")
@@ -51,6 +56,23 @@ class FriendshipRequest(models.Model):
     def cancel(self):
         signals.friendship_cancelled.send(sender=self)
         self.delete()
+
+
+def friendship_requested_notification(sender, instance):
+    if notification:
+        notification.send([instance.to_user], 
+            "friendship_requested", {'friend_request': instance,})
+            
+signals.friendship_requested.connect(friendship_requested_notification, sender=FriendshipRequest)
+
+def friendship_accepted_notification(sender, instance):
+    if notification:
+        notification.send([instance.from_user], 
+            "friendship_accepted", {'friend_request': instance,})
+            
+signals.friendship_accepted.connect(friendship_accepted_notification, sender=FriendshipRequest)
+
+
 
 
 class FriendshipManager(models.Manager):

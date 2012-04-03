@@ -23,6 +23,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from models import FriendshipRequest, Friendship
 from app_settings import REDIRECT_FALLBACK_TO_PROFILE
+import signals
 
 
 class BaseFriendshipActionView(RedirectView):
@@ -76,9 +77,10 @@ class FriendshipRequestView(FriendshipAcceptView):
             request_message = request.REQUEST.get('message', u'')
             # If we already have an active friendship request IntegrityError
             # will be raised and the transaction will be rolled back.
-            FriendshipRequest.objects.create(from_user=request.user,
+            friendship_request=FriendshipRequest.objects.create(from_user=request.user,
                                              to_user=user,
                                              message=request_message)
+            signals.friendship_requested.send(sender=friendship_request)
 
 
 class FriendshipDeclineView(BaseFriendshipActionView):
