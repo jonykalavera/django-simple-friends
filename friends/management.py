@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db.models.signals import post_syncdb
+from django.utils.translation import ugettext_lazy as _
+
 import models
 #from django.contrib.auth.models import User
 import signals
