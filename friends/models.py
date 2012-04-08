@@ -58,14 +58,14 @@ class FriendshipRequest(models.Model):
         self.delete()
 
 
-def friendship_requested_notification(sender, instance, **kwargs):
+def friendship_requested_notification(instance, **kwargs):
     if notification:
         notification.send([instance.to_user], 
             "friendship_requested", {'friend_request': instance,})
             
 signals.friendship_requested.connect(friendship_requested_notification)
 
-def friendship_accepted_notification(sender, instance, **kwargs):
+def friendship_accepted_notification(instance, **kwargs):
     if notification:
         notification.send([instance.from_user], 
             "friendship_accepted", {'friend_request': instance,})
