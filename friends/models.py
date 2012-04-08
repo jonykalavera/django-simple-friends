@@ -47,7 +47,7 @@ class FriendshipRequest(models.Model):
         Friendship.objects.befriend(self.from_user, self.to_user)
         self.accepted = True
         self.save()
-        signals.friendship_accepted.send(sender=self)
+        signals.friendship_accepted.send(sender=FriendshipRequest, friendship=self)
 
     def decline(self):
         signals.friendship_declined.send(sender=self)
@@ -58,17 +58,17 @@ class FriendshipRequest(models.Model):
         self.delete()
 
 
-def friendship_requested_notification(instance, **kwargs):
+def friendship_requested_notification(sender, friendship, **kwargs):
     if notification:
-        notification.send([instance.to_user], 
-            "friendship_requested", {'friend_request': instance,})
+        notification.send([friendship.to_user], 
+            "friendship_requested", {'friend_request': friendship,})
             
 signals.friendship_requested.connect(friendship_requested_notification)
 
-def friendship_accepted_notification(instance, **kwargs):
+def friendship_accepted_notification(sender, friendship, **kwargs):
     if notification:
-        notification.send([instance.from_user], 
-            "friendship_accepted", {'friend_request': instance,})
+        notification.send([friendship.from_user], 
+            "friendship_accepted", {'friend_request': friendship,})
             
 signals.friendship_accepted.connect(friendship_accepted_notification)
 

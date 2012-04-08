@@ -1,6 +1,6 @@
 from django.dispatch import Signal
 
-friendship_requested = Signal()
+friendship_requested = Signal(providing_args=["friendship",])
 
 
 friendship_accepted = Signal()

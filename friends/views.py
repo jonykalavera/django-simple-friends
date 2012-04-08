@@ -80,7 +80,7 @@ class FriendshipRequestView(FriendshipAcceptView):
             friendship_request=FriendshipRequest.objects.create(from_user=request.user,
                                              to_user=user,
                                              message=request_message)
-            signals.friendship_requested.send(sender=friendship_request)
+            signals.friendship_requested.send(sender=FriendshipRequest, friendship=friendship_request)
 
 
 class FriendshipDeclineView(BaseFriendshipActionView):
